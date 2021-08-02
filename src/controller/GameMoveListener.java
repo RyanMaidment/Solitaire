@@ -2,7 +2,7 @@ package controller;
 
 import model.*;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 import javax.swing.event.MouseInputAdapter;
@@ -14,7 +14,49 @@ public class GameMoveListener extends MouseInputAdapter {
     private GamePanel gamePanel;
     private FoundationPiles selectedFoundation = null;
     private Card selectedCard = null;
+    private int p;
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        Component component = e.getComponent().getComponentAt(e.getPoint());
+        if (component instanceof Columns) {
+            selectedColumn = (Columns) component;
+            discardPile = null;
+            selectedCard = selectedColumn.getClickedCard(e.getY() - 150);
+            Boolean x = null;
+            for (FoundationPiles foundation : GamePanel.getFoundationPiles()) {
+                x=selectedColumn.moveTo(foundation, selectedCard);
+            }
+            if (!x) {
+                for (Columns columns : GamePanel.getColumns()) {
+                    selectedColumn.moveTo(columns, selectedCard);
+                }
+            }
+        }else if (component instanceof DiscardPile) {
+            selectedColumn = null;
+            discardPile = GamePanel.getDiscardPile();
+            selectedCard = discardPile.topCard();
+            Boolean x = null;
+            if (selectedCard != null) {
+                for (FoundationPiles foundation : GamePanel.getFoundationPiles()) {
+                    x = foundation.moveFromDiscard(discardPile, selectedCard);
+                    if(x){
+                        break;
+                    }
+                }
+            }
+            if (!x) {
+                for (Columns columns : GamePanel.getColumns()) {
+                    boolean y=columns.moveFromDiscard(discardPile, selectedCard);
+                    if(y){
+                        break;
+                    }
+                }
+            }
+        } else if(GamePanel.p == 52){
+            gamePanel.ifWon();
+        }
+    }
     @Override
     public void mousePressed(MouseEvent e) {
         Component component = e.getComponent().getComponentAt(e.getPoint());
@@ -27,36 +69,35 @@ public class GameMoveListener extends MouseInputAdapter {
             selectedColumn = (Columns) component;
             discardPile = null;
             selectedCard = selectedColumn.getClickedCard(e.getY() - 150);
-            for (FoundationPiles foundation : GamePanel.getFoundationPiles()) {
-                if (selectedColumn.moveTo(foundation, selectedCard)) {
-                    selectedColumn = null;
-                    break;
-                }
-            }
-        } else if (component instanceof Deck) {
+
+        }
+
+    else if (component instanceof Deck) {
             selectedColumn = null;
             if (!deck.isEmpty()) {
-                DiscardPile waste = GamePanel.getWastePile();
-                waste.push(deck.pop());
-                waste.topCard().showFace();
+                DiscardPile discard = GamePanel.getDiscardPile();
+                discard.push(deck.pop());
+                discard.topCard().showFace();
             } else if (deck.isEmpty()) {
-                DiscardPile waste = GamePanel.getWastePile();
-                while (!waste.isEmpty()) {
-                    deck.push(waste.pop());
+                DiscardPile discard = GamePanel.getDiscardPile();
+                GamePanel.counter = GamePanel.counter - 100;
+                if (GamePanel.counter < 0) {
+                    GamePanel.counter = 0;
+                }
+                GamePanel.addCounter();
+                while (!discard.isEmpty()) {
+                    deck.push(discard.pop());
                 }
             }
         } else if (component instanceof DiscardPile) {
             selectedColumn = null;
-            discardPile = GamePanel.getWastePile();
+            discardPile = GamePanel.getDiscardPile();
             selectedCard = discardPile.topCard();
-            if (selectedCard != null) {
-                for (FoundationPiles foundation : GamePanel.getFoundationPiles()) {
-                    foundation.moveFromWaste(discardPile, selectedCard);
-                }
-            }
+
+            }else if(GamePanel.p == 52){
+            gamePanel.ifWon();
         }
-        e.getComponent().repaint();
-    }
+        }
 
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -66,31 +107,28 @@ public class GameMoveListener extends MouseInputAdapter {
                 if (discardPile != null) {
                     Columns destination = (Columns) releasedComponent;
                     if (!discardPile.isEmpty()) {
-                        destination.moveFromWaste(discardPile, selectedCard);
+                        destination.moveFromDiscard(discardPile, selectedCard);
                     }
                     discardPile.repaint();
                 } else if (selectedColumn != null) {
                     Columns source = selectedColumn;
                     Columns destination = (Columns) releasedComponent;
                     source.moveTo(destination, selectedCard);
-                    source.repaint();
                 } else if (selectedFoundation != null) {
                     FoundationPiles source = selectedFoundation;
                     Columns destination = (Columns) releasedComponent;
                     source.moveTo(destination, selectedCard);
                     source.repaint();
                     destination.repaint();
-                } else if (gamePanel.ifWon()) {
-                    System.out.println("Congrats.");
+                } else if(GamePanel.p == 52){
+                    gamePanel.ifWon();
                 }
             }
-            e.getComponent().repaint();
             selectedCard = null;
             selectedFoundation = null;
             selectedColumn = null;
             discardPile = null;
         }
-
 
     }
 }

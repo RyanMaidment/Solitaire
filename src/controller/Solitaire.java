@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import javax.swing.*;
 
@@ -41,7 +42,9 @@ public class Solitaire implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 	if(e.getSource() == restart) {
 		frame.dispose();
+		GamePanel.counter = 0;
 		new Solitaire();
+
 	}
 	if(e.getSource() == instructions) {
 		JOptionPane.showMessageDialog(frame, "OBJECT OF THE GAME\n" +

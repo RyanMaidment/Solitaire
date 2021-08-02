@@ -7,7 +7,6 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class Columns extends Pile {
-private int s;
 	
 	public Columns(int x, int y, int size) {
 		super(x, y);
@@ -22,13 +21,14 @@ private int s;
 		}
 	}
 
-	public int getS(){
-		return s;
-	}
-	public void moveFromWaste(DiscardPile source, Card card) {
+	public boolean moveFromDiscard(DiscardPile source, Card card) {
 		if (this.accepts(card)) {
+			GamePanel.counter = GamePanel.counter + 5;
+			GamePanel.addCounter();
 			this.push(source.pop());
+			return true;
 		}
+		return false;
 	}
 
 	public boolean accepts(Card card) {
@@ -42,9 +42,11 @@ private int s;
 	public boolean moveTo(FoundationPiles destination, Card card) {
 		if (!this.isEmpty() || card.getValue() == 13) {
 			if (destination.accepts(card)) {
-				s++;
-				System.out.println(s);
 				Deque<Card> toBeMovedCards = new ArrayDeque<>();
+				GamePanel.p = GamePanel.p + 1;
+				System.out.println(GamePanel.p);
+				GamePanel.counter = GamePanel.counter + 20;
+				GamePanel.addCounter();
 				while(!this.isEmpty()) {
 					Card tmp = this.pop();
 					toBeMovedCards.push(tmp);
@@ -64,26 +66,28 @@ private int s;
 		return false;
 	}
 
-	public void moveTo(Columns destination, Card card) {
+	public boolean moveTo(Columns destination, Card card) {
 		if (!this.isEmpty() || card.getValue() == 13) {
 			if (destination.accepts(card)) {
 				Deque<Card> toBeMovedCards = new ArrayDeque<>();
-				while(!this.isEmpty()) {
+				GamePanel.counter = GamePanel.counter + 5;
+				GamePanel.addCounter();
+				while (!this.isEmpty()) {
 					Card tmp = this.pop();
 					toBeMovedCards.push(tmp);
-					if(tmp.equals(card)) {
+					if (tmp.equals(card)) {
 						break;
 					}
 				}
-				while(!toBeMovedCards.isEmpty()) {
+				while (!toBeMovedCards.isEmpty()) {
 					destination.push(toBeMovedCards.pop());
 				}
 			}
 		}
-
 		if(!this.isEmpty()) {
 			this.topCard().showFace();
 		}
+		return false;
 	}
 
 	public Card getClickedCard(int y) {

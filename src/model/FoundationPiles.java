@@ -1,10 +1,11 @@
 package model;
 
+import controller.GamePanel;
+
 import java.awt.Graphics;
 import java.util.Stack;
 
 public class FoundationPiles extends Pile{
-	private int z;
 	private int suit;
 	public FoundationPiles(int x, int y, int i) {
 		super(x, y);
@@ -12,18 +13,16 @@ public class FoundationPiles extends Pile{
 		this.suit = i;
 	}
 
-
-	public int getZ(){
-		return z;
-	}
-
-	public void moveFromWaste(DiscardPile source, Card card) {
+	public boolean moveFromDiscard(DiscardPile source, Card card) {
 		if(accepts(card)) {
-			z++;
-			System.out.println(z);
+			GamePanel.counter = GamePanel.counter + 20;
+			GamePanel.p = GamePanel.p + 1;
+			System.out.println(GamePanel.p);
+			GamePanel.addCounter();
 			this.push(source.pop());
-			source = null;
+			return true;
 		}
+		return false;
 	}
 
 	public void moveTo(Columns destination, Card card) {

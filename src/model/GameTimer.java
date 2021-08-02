@@ -11,8 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.*;
 
 public class GameTimer extends JLabel {
-
-
   public GameTimer() {
 
     super("Time Left", JLabel.CENTER);

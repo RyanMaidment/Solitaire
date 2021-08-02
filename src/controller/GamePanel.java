@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.awt.event.ActionEvent;
@@ -14,6 +16,8 @@ import javax.swing.*;
 
 public class GamePanel extends JPanel {
 	GameTimer gameTimer;
+	static GameCounter gameCounter;
+	public static Timer timer;
 	private static int start = -1;
 	private static Deck deck;
 	private static DiscardPile discardPile;
@@ -21,13 +25,19 @@ public class GamePanel extends JPanel {
 	private static Columns[] columns;
 	private Columns column;
 	private FoundationPiles foundationPile;
+	private String displayTimeString;
+	public static int counter;
+	public static int p;
 
 	public GamePanel() {
 		super.setLayout(null);
 		initializePiles();
 		gameTimer = new GameTimer();
+		gameCounter = new GameCounter();
 		add(gameTimer);
+		add(gameCounter);
 		startTimer();
+		addCounter();
 
 		GameMoveListener l = new GameMoveListener();
 		addMouseListener(l);
@@ -52,6 +62,13 @@ public class GamePanel extends JPanel {
 		}
 	}
 
+	public static void addCounter() {
+		String counterScore = String.valueOf(counter);
+		gameCounter.setText(counterScore);
+		gameCounter.revalidate();
+		gameCounter.repaint();
+	}
+
 	public void startTimer() {
 		Date startDate = new Date();
 
@@ -62,33 +79,35 @@ public class GamePanel extends JPanel {
 				Date currentDate = new Date();
 				Format formatter = new SimpleDateFormat("mm:ss");
 				Date displayTime = new Date(currentDate.getTime() - startDate.getTime());
-				String displayTimeString = formatter.format(displayTime);
+				displayTimeString = formatter.format(displayTime);
 				gameTimer.setText(displayTimeString);
 				repaint();
 			}
 		};
-		Timer timer = new Timer(1000, actionTimer);
+		timer = new Timer(1000, actionTimer);
 		timer.start();
 	}
-
-	public static Card popDeck () {
-			return deck.pop();
-		}
 
 	public static Columns[] getColumns () {
 		return columns;
 	}
-	public boolean ifWon(){
-		int S = column.getS();
-		int Z = foundationPile.getZ();
-		System.out.println(S+Z);
-			return S + Z == 52;
+	public static Card popDeck () {
+			return deck.pop();
 		}
-		public static FoundationPiles[] getFoundationPiles () {
+
+	public void ifWon() {
+		String time = gameTimer.getText();
+		String points = gameCounter.getText();
+		String name = "";
+		System.out.println("Congrats!");
+		//TODO: prompt for name, add to leaderboard.
+	}
+
+	public static FoundationPiles[] getFoundationPiles () {
 			return foundationPiles;
 		}
 
-		public static DiscardPile getWastePile () {
+		public static DiscardPile getDiscardPile () {
 			return discardPile;
 		}
 
