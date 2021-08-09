@@ -8,7 +8,7 @@ public class GameCounter extends JLabel {
 
         super("", JLabel.CENTER);
         this.setForeground(Color.WHITE);
-        super.setBounds(150, 600, 200, 30);
+        super.setBounds(200, 600, 200, 30);
 
     }
 
