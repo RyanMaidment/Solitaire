@@ -16,7 +16,9 @@ import javax.swing.*;
 
 public class GamePanel extends JPanel {
 	GameTimer gameTimer;
+	TimeLabel TimeLabel;
 	static GameCounter gameCounter;
+	ScoreLabel scoreLabel;
 	public static Timer timer;
 	private static int start = -1;
 	private static Deck deck;
@@ -33,9 +35,13 @@ public class GamePanel extends JPanel {
 		super.setLayout(null);
 		initializePiles();
 		gameTimer = new GameTimer();
+		TimeLabel = new TimeLabel();
 		gameCounter = new GameCounter();
+		scoreLabel = new ScoreLabel();
+		add(scoreLabel);
 		add(gameTimer);
 		add(gameCounter);
+		add(TimeLabel);
 		startTimer();
 		addCounter();
 
@@ -88,37 +94,38 @@ public class GamePanel extends JPanel {
 		timer.start();
 	}
 
-	public static Columns[] getColumns () {
+	public static Columns[] getColumns() {
 		return columns;
 	}
-	public static Card popDeck () {
-			return deck.pop();
-		}
+
+	public static Card popDeck() {
+		return deck.pop();
+	}
 
 	public void ifWon() {
 		String time = gameTimer.getText();
 		String points = gameCounter.getText();
 		String name = "";
 		System.out.println("Congrats!");
-		//TODO: prompt for name, add to leaderboard.
+		// TODO: prompt for name, add to leaderboard.
 	}
 
-	public static FoundationPiles[] getFoundationPiles () {
-			return foundationPiles;
-		}
-
-		public static DiscardPile getDiscardPile () {
-			return discardPile;
-		}
-
-		public static Deck getDeck () {
-			return deck;
-		}
-
-		@Override
-		protected void paintComponent (Graphics g){
-			super.paintComponent(g);
-			g.drawImage(Card.getBackground(), 0, 0, this.getWidth(), this.getHeight(), this);
-		}
-
+	public static FoundationPiles[] getFoundationPiles() {
+		return foundationPiles;
 	}
+
+	public static DiscardPile getDiscardPile() {
+		return discardPile;
+	}
+
+	public static Deck getDeck() {
+		return deck;
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(Card.getBackground(), 0, 0, this.getWidth(), this.getHeight(), this);
+	}
+
+}

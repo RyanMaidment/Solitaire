@@ -6,7 +6,7 @@ import java.awt.*;
 public class GameCounter extends JLabel {
     public GameCounter() {
 
-        super("Score", JLabel.CENTER);
+        super("", JLabel.CENTER);
         this.setForeground(Color.WHITE);
         super.setBounds(150, 600, 200, 30);
 

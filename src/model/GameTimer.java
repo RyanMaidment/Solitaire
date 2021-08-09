@@ -13,9 +13,9 @@ import java.awt.event.*;
 public class GameTimer extends JLabel {
   public GameTimer() {
 
-    super("Time Left", JLabel.CENTER);
+    super("", JLabel.CENTER);
     this.setForeground(Color.WHITE);
-    super.setBounds(300, 600, 200, 30);
+    super.setBounds(550, 600, 200, 30);
 
   }
 
