@@ -4,6 +4,9 @@ import model.*;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -48,6 +51,7 @@ public class GamePanel extends JPanel {
 		GameMoveListener l = new GameMoveListener();
 		addMouseListener(l);
 		addMouseMotionListener(l);
+
 	}
 
 	private void initializePiles() {
@@ -108,6 +112,21 @@ public class GamePanel extends JPanel {
 		String name = "";
 		System.out.println("Congrats!");
 		// TODO: prompt for name, add to leaderboard.
+
+		try {
+			writeScoreToFIle();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void writeScoreToFIle() throws IOException {
+
+		BufferedWriter writer = new BufferedWriter(new FileWriter("Score"));
+		writer.append("\n");
+		writer.append(Solitaire.playerName + " " + String.valueOf(counter));
+		writer.close();
 	}
 
 	public static FoundationPiles[] getFoundationPiles() {

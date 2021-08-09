@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.swing.*;
@@ -20,7 +22,7 @@ public class Solitaire implements ActionListener {
 	GameTimer gameTimer;
 	public static String playerName;
 
-	public Solitaire() {
+	public Solitaire() throws IOException {
 
 		playerName = JOptionPane.showInputDialog("Enter your name");
 		System.out.println(playerName);
@@ -49,7 +51,12 @@ public class Solitaire implements ActionListener {
 		if (e.getSource() == restart) {
 			frame.dispose();
 			GamePanel.counter = 0;
-			new Solitaire();
+			try {
+				new Solitaire();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 
 		}
 		if (e.getSource() == instructions) {
