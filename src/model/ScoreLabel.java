@@ -9,7 +9,7 @@ import java.awt.*;
 public class ScoreLabel extends JLabel {
 
   public ScoreLabel() {
-    super(Solitaire.playerName + " Score", JLabel.CENTER);
+    super(Solitaire.playerName + "'s Score", JLabel.CENTER);
     this.setForeground(Color.WHITE);
     super.setBounds(110, 600, 210, 30);
 

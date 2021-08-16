@@ -23,16 +23,24 @@ public class GameMoveListener extends MouseInputAdapter {
             selectedColumn = (Columns) component;
             discardPile = null;
             selectedCard = selectedColumn.getClickedCard(e.getY() - 150);
-            Boolean x = null;
+            boolean x = true;
             for (FoundationPiles foundation : GamePanel.getFoundationPiles()) {
-                x=selectedColumn.moveTo(foundation, selectedCard);
+               x=selectedColumn.moveTo(foundation, selectedCard);
+               if(x){
+                   break;
+               }
             }
-            if (!x) {
+            if(!x) {
                 for (Columns columns : GamePanel.getColumns()) {
-                    selectedColumn.moveTo(columns, selectedCard);
+                   boolean y;
+                    y=selectedColumn.moveTo(columns, selectedCard);
+                   if (y){
+                       break;
+                   }
+
                 }
             }
-        }else if (component instanceof DiscardPile) {
+        } else if (component instanceof DiscardPile) {
             selectedColumn = null;
             discardPile = GamePanel.getDiscardPile();
             selectedCard = discardPile.topCard();
@@ -40,23 +48,24 @@ public class GameMoveListener extends MouseInputAdapter {
             if (selectedCard != null) {
                 for (FoundationPiles foundation : GamePanel.getFoundationPiles()) {
                     x = foundation.moveFromDiscard(discardPile, selectedCard);
-                    if(x){
+                    if (x) {
                         break;
                     }
                 }
             }
             if (!x) {
                 for (Columns columns : GamePanel.getColumns()) {
-                    boolean y=columns.moveFromDiscard(discardPile, selectedCard);
-                    if(y){
+                    boolean y = columns.moveFromDiscard(discardPile, selectedCard);
+                    if (y) {
                         break;
                     }
                 }
             }
-        } else if(GamePanel.p == 52){
-            gamePanel.ifWon();
+        } else if (GamePanel.p == 52) {
+            GamePanel.ifWon();
         }
     }
+
     @Override
     public void mousePressed(MouseEvent e) {
         Component component = e.getComponent().getComponentAt(e.getPoint());
@@ -70,9 +79,7 @@ public class GameMoveListener extends MouseInputAdapter {
             discardPile = null;
             selectedCard = selectedColumn.getClickedCard(e.getY() - 150);
 
-        }
-
-    else if (component instanceof Deck) {
+        } else if (component instanceof Deck) {
             selectedColumn = null;
             if (!deck.isEmpty()) {
                 DiscardPile discard = GamePanel.getDiscardPile();
@@ -88,16 +95,14 @@ public class GameMoveListener extends MouseInputAdapter {
                 while (!discard.isEmpty()) {
                     deck.push(discard.pop());
                 }
+            } else if (component instanceof DiscardPile) {
+                selectedColumn = null;
+                discardPile = GamePanel.getDiscardPile();
+                selectedCard = discardPile.topCard();
             }
-        } else if (component instanceof DiscardPile) {
-            selectedColumn = null;
-            discardPile = GamePanel.getDiscardPile();
-            selectedCard = discardPile.topCard();
+        }
+    }
 
-            }else if(GamePanel.p == 52){
-            gamePanel.ifWon();
-        }
-        }
 
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -120,15 +125,15 @@ public class GameMoveListener extends MouseInputAdapter {
                     source.moveTo(destination, selectedCard);
                     source.repaint();
                     destination.repaint();
-                } else if(GamePanel.p == 52){
-                    gamePanel.ifWon();
                 }
+                selectedCard = null;
+                selectedFoundation = null;
+                selectedColumn = null;
+                discardPile = null;
             }
-            selectedCard = null;
-            selectedFoundation = null;
-            selectedColumn = null;
-            discardPile = null;
         }
-
+        if (GamePanel.p == 52) {
+            GamePanel.ifWon();
+        }
     }
 }

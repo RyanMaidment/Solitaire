@@ -5,13 +5,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
 
 public class MainMenu {
@@ -22,7 +17,7 @@ public class MainMenu {
     JButton rulesButton;
     JButton quitButton;
 
-    public MainMenu() throws IOException {
+    public MainMenu() {
         frame = new JFrame();
         rulesButton = new JButton("Rules");
         rulesButton.setBounds(125, 200, 150, 40);
@@ -131,9 +126,8 @@ public class MainMenu {
     }
 
     private String readFromScore() throws IOException {
-
         StringBuilder resultStringBuilder = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader("Score"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("./Score.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 resultStringBuilder.append(line).append("\n");

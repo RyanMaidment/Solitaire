@@ -3,7 +3,6 @@ package model;
 import controller.GamePanel;
 
 import java.awt.Graphics;
-import java.util.Stack;
 
 public class FoundationPiles extends Pile{
 	private int suit;

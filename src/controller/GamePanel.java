@@ -2,20 +2,16 @@ package controller;
 
 import model.*;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.Date;
-import java.awt.event.ActionEvent;
-
-import javax.swing.*;
 
 public class GamePanel extends JPanel {
 	GameTimer gameTimer;
@@ -28,15 +24,14 @@ public class GamePanel extends JPanel {
 	private static DiscardPile discardPile;
 	private static FoundationPiles[] foundationPiles;
 	private static Columns[] columns;
-	private Columns column;
-	private FoundationPiles foundationPile;
-	private String displayTimeString;
+	private static String displayTimeString;
 	public static int counter;
 	public static int p;
 
 	public GamePanel() {
 		super.setLayout(null);
 		initializePiles();
+		p = 0;
 		gameTimer = new GameTimer();
 		TimeLabel = new TimeLabel();
 		gameCounter = new GameCounter();
@@ -106,26 +101,50 @@ public class GamePanel extends JPanel {
 		return deck.pop();
 	}
 
-	public void ifWon() {
-		String time = gameTimer.getText();
-		String points = gameCounter.getText();
-		String name = "";
-		System.out.println("Congrats!");
-		// TODO: prompt for name, add to leaderboard.
-
+	public static void ifWon() {
 		try {
-			writeScoreToFIle();
+			writeScoreToFile();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		JDialog gameOver = new JDialog((Dialog) null, "Game Over", true);
+		gameOver.setSize(300,300);
+		gameOver.setLayout(null);
+		JTextField message = new JTextField("Congratulations, YOU WON!");
+		JButton exit = new JButton("Exit");
+		JButton restart = new JButton("Restart");
+		message.setVisible(true);
+		message.setEditable(false);
+		message.setBounds(40,10,160,40);
+		gameOver.add(message);
+		exit.setVisible(true);
+		exit.setBounds(100,160,80,40);
+		gameOver.add(exit);
+		restart.setVisible(true);
+		restart.setBounds(100,110,80,40);
+		gameOver.add(restart);
+		restart.addActionListener(e -> {
+			counter = 0;
+			try {
+				gameOver.dispose();
+				Solitaire.getJFrame().dispose();
+				new Solitaire();
+			} catch (IOException ioException) {
+				ioException.printStackTrace();
+			}
+		});
+		exit.addActionListener(e -> {
+			System.exit(0);
+		});
+		gameOver.setVisible(true);
 	}
 
-	public void writeScoreToFIle() throws IOException {
-
-		BufferedWriter writer = new BufferedWriter(new FileWriter("Score"));
+	public static void writeScoreToFile() throws IOException {
+		String score = "./Score.txt";
+		PrintWriter writer = new PrintWriter(new FileWriter(score, true));
 		writer.append("\n");
-		writer.append(Solitaire.playerName + " " + String.valueOf(counter));
+		writer.append("Name: "+Solitaire.playerName + " Score: " + counter + " Time: " + displayTimeString);
 		writer.close();
 	}
 

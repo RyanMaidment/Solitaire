@@ -1,32 +1,23 @@
 package controller;
 
-import model.GameTimer;
-
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 
-import javax.swing.*;
-
 public class Solitaire implements ActionListener {
-	JFrame frame;
+	private static JFrame frame;
 	JMenuBar menuBar;
 	JMenu menu;
 	JMenuItem restart;
 	JMenuItem instructions;
+	JMenuItem moveInfo;
 	protected GamePanel gamePanel;
-	GameTimer gameTimer;
 	public static String playerName;
 
 	public Solitaire() throws IOException {
-
 		playerName = JOptionPane.showInputDialog("Enter your name");
-		System.out.println(playerName);
-
 		menuBar = new JMenuBar();
 		menu = new JMenu("Menu");
 		menuBar.add(menu);
@@ -34,7 +25,10 @@ public class Solitaire implements ActionListener {
 		restart.addActionListener(this);
 		menu.add(restart);
 		instructions = new JMenuItem("Instructions");
+		moveInfo = new JMenuItem("Game Movement Info");
 		instructions.addActionListener(this);
+		moveInfo.addActionListener(this);
+		menu.add(moveInfo);
 		menu.add(instructions);
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,11 +40,15 @@ public class Solitaire implements ActionListener {
 		frame.pack();
 	}
 
+	public static JFrame getJFrame(){
+		return frame;
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == restart) {
 			frame.dispose();
 			GamePanel.counter = 0;
+			GamePanel.p = 0;
 			try {
 				new Solitaire();
 			} catch (IOException e1) {
@@ -106,6 +104,16 @@ public class Solitaire implements ActionListener {
 					+ " Filling a space with a king could potentially unblock one of the face down cards in another pile in the tableau.\n"
 					+ "\n"
 					+ "Continue to transfer cards in the tableau and bring cards into play from the stock pile until all the cards are built in suit sequences in the foundation piles to win!");
+		}
+		if (e.getSource() == moveInfo) {
+			JOptionPane.showMessageDialog(frame, "GAME MOVEMENT\n"
+					+ "Single click on a card will move cards in this order:\n"
+					+"Move card to tableau to foundation.\n"
+					+"Move card from column to column.\n"
+					+"Single Clicking a card in the Discard Pile will move it to the tableau or foundation if a move is available.\n"
+					+"Click and Drag:\n"
+					+"You may click and drag cards from column to column. Or from discard pile to tableau"
+			);
 		}
 	}
 }

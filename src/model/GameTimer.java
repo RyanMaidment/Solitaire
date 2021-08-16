@@ -1,14 +1,7 @@
 package model;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.Timer;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.event.ActionListener;
-
-import java.awt.event.*;
+import javax.swing.*;
+import java.awt.*;
 
 public class GameTimer extends JLabel {
   public GameTimer() {
