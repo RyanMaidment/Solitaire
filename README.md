@@ -2,4 +2,4 @@
 
 # Download Solitaire
 
-https://mega.nz/file/uFwXwKJa#R2O8YyHNjGPeDfyrL6JJ1ThpEouyDZ5lCoAqof26GNQ
+https://mega.nz/file/rIw2mDAT#JJlkqLlwMDEiPuTaSkDoHxRUchhQKF0zX4D3T0ZCLkA
