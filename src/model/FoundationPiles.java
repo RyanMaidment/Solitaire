@@ -16,7 +16,6 @@ public class FoundationPiles extends Pile{
 		if(accepts(card)) {
 			GamePanel.counter = GamePanel.counter + 20;
 			GamePanel.p = GamePanel.p + 1;
-			System.out.println(GamePanel.p);
 			GamePanel.addCounter();
 			this.push(source.pop());
 			return true;
@@ -27,6 +26,9 @@ public class FoundationPiles extends Pile{
 	public void moveTo(Columns destination, Card card) {
 		if(destination.accepts(card)) {
 			destination.push(this.pop());
+			GamePanel.p = GamePanel.p - 1;
+			GamePanel.counter = GamePanel.counter - 20;
+			GamePanel.addCounter();
 		}
 	}
 
