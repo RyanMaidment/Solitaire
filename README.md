@@ -2,4 +2,7 @@
 
 # Download Solitaire
 
-https://mega.nz/file/uFwXwKJa#R2O8YyHNjGPeDfyrL6JJ1ThpEouyDZ5lCoAqof26GNQ
+https://mega.nz/file/vdpAQRgT#13EjepnG1rR5hyUdR46OFVO-thn4mNsoGh28skSdJYE
+
+# Installation Guide
+[Installation Guide.pdf](https://github.com/RyanMaidment/Solitaire/files/6994411/Installation.Guide.pdf)
